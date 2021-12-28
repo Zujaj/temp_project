@@ -52,6 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               Config.api_key,
             ),
+            const Text(
+              'Name is ' + Config.client_name,
+            ),
+            const Text(
+              'Pass is ' + Config.client_pass,
+            ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,

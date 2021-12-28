@@ -7,18 +7,35 @@ jobs:
   build_and_preview:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
+    environment: "Test_Env"
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
+
       - uses: subosito/flutter-action@v1
-      - name: "Decode base64 secrets"
-        run: echo $API_KEY | base64 -d > lib/config/env.dart
+        with:
+          channel: "master"
+
+      - name: "Decode Environment File"
+        run: sudo echo "${ENV_SECRET// /}" | base64 --decode > .env
         env:
-          API_KEY: ${{ secrets.API_KEY }}
+          ENV_SECRET: ${{ secrets.ENV_SECRET }}
+
+      - name: "Decode App Config File"
+        run: |
+          mkdir -p lib/config
+          sudo echo "${APP_CONFIG// /}" | base64 --decode > lib/config/env.dart
+        env:
+          APP_CONFIG: ${{ secrets.APP_CONFIG }}
+
       - name: "Run flutter pub get"
         run: flutter pub get
+
+      - name: "Inject Environment Variables"
+        run: flutter pub run build_runner build --delete-conflicting-outputs
       - name: "Build Web App"
         run: flutter build web
       - uses: FirebaseExtended/action-hosting-deploy@v0
