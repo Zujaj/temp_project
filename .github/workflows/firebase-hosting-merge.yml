@@ -26,7 +26,7 @@ jobs:
       - name: "Run flutter pub get"
         run: flutter pub get
       - name: "View Environment File"
-        run: sudo nano lib/env.dart
+        run: sudo less lib/env.dart
       - name: "Generate Environment File"
         run: flutter pub run build_runner build
       - name: "Build Web App"
