@@ -11,29 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     environment: "Test_Env"
     steps:
-     
       - uses: actions/checkout@v2
-     
+
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
-     
+
       - uses: subosito/flutter-action@v1
         with:
           channel: "master"
-      
+
       - name: "Decode Environment File"
         run: sudo echo "${ENV_SECRET// /}" | base64 --decode > .env
         env:
           ENV_SECRET: ${{ secrets.ENV_SECRET }}
-      
+
       - name: "Decode App Config File"
         run: |
           mkdir -p lib/config
           sudo echo "${APP_CONFIG// /}" | base64 --decode > lib/config/env.dart
         env:
           APP_CONFIG: ${{ secrets.APP_CONFIG }}
-     
+      
+      - name: "Run flutter clean"
+        run: flutter clean
+
       - name: "Run flutter pub get"
         run: flutter pub get
 

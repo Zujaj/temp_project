@@ -31,12 +31,15 @@ jobs:
         env:
           APP_CONFIG: ${{ secrets.APP_CONFIG }}
 
+      - name: "Run flutter clean"
+        run: flutter clean
+
       - name: "Run flutter pub get"
         run: flutter pub get
 
       - name: "Inject Environment Variables"
         run: flutter pub run build_runner build --delete-conflicting-outputs
-        
+
       - name: "Build Web App"
         run: flutter build web
       - uses: FirebaseExtended/action-hosting-deploy@v0
