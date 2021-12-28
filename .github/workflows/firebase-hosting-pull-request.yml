@@ -31,9 +31,6 @@ jobs:
         env:
           APP_CONFIG: ${{ secrets.APP_CONFIG }}
 
-      - name: "Run flutter clean"
-        run: flutter clean
-
       - name: "Run flutter pub get"
         run: flutter pub get
 

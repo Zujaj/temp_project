@@ -32,20 +32,12 @@ jobs:
           sudo echo "${APP_CONFIG// /}" | base64 --decode > lib/config/env.dart
         env:
           APP_CONFIG: ${{ secrets.APP_CONFIG }}
-      
-      - name: "Run flutter clean"
-        run: flutter clean
-
+          
       - name: "Run flutter pub get"
         run: flutter pub get
 
       - name: "Inject Environment Variables"
         run: flutter pub run build_runner build --delete-conflicting-outputs
-      
-      - name: "View Environment Variables"
-        run: | 
-          sudo less lib/config/env.dart
-          sudo less lib/config/env.g.dart
 
       - name: "Build Web App"
         run: flutter build web
