@@ -27,21 +27,15 @@ jobs:
         env:
           ENV_SECRET: ${{ secrets.ENV_SECRET }}
       
-      - name: "Decode App Secrets"
+      - name: "Decode App Config File"
         run: |
           mkdir -p lib/config
-          sudo echo "${API_KEY// /}" | base64 --decode > lib/config/env.dart
+          sudo echo "${APP_CONFIG// /}" | base64 --decode > lib/config/env.dart
         env:
-          API_KEY: ${{ secrets.API_KEY }}
+          APP_CONFIG: ${{ secrets.APP_CONFIG }}
      
       - name: "Run flutter pub get"
         run: flutter pub get
-
-      - name: "View App Secret File"
-        run: sudo less lib/config/env.dart
-
-      - name: "View Environment File"
-        run: sudo less .env
 
       - name: "Generate Environment File"
         run: flutter pub run build_runner build
